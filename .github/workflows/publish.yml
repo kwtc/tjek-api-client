@@ -12,9 +12,6 @@ jobs:
     
     permissions:
       packages: write
-        
-    env:
-      SOLUTION: ./Kwtc.Tjek.Client.sln
     
     steps:
 
@@ -34,13 +31,16 @@ jobs:
       run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
 
     - name: Build
-      run: dotnet build $SOLUTION -c Release /p:Version=${VERSION}
+      run: dotnet build -c Release /p:Version=${VERSION}
 
     - name: Test
-      run: dotnet test $SOLUTION -c Release /p:Version=${VERSION} --no-build
+      run: dotnet test -c Release /p:Version=${VERSION} --no-build
 
     - name: Pack
-      run: dotnet pack $SOLUTION -c Release /p:Version=${VERSION} --no-build --output .
+      run: dotnet pack -c Release /p:Version=${VERSION} --no-build --output .
+
+    - name: Push package to Nuget.org
+      run: dotnet nuget push **\*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
 
     - name: Push package to Github
       run: dotnet nuget push **\*.nupkg --api-key ${{secrets.GITHUB_TOKEN}} --source https://nuget.pkg.github.com/kwtc/index.json
