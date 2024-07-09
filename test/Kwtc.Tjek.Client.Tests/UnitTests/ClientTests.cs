@@ -26,13 +26,19 @@ public class ClientTests
         return act.Should().ThrowAsync<ArgumentException>();
     }
 
-    [Fact]
-    public async Task Search_ValidSearchTermExpectedResponse_ShouldSendRequest()
+    [Theory]
+    [InlineData("ValidSearchTerm")]
+    [InlineData("Valid Search Term")]
+    [InlineData("Valid%Search%Term")]
+    [InlineData("Valid#Search#Term")]
+    [InlineData("Valid.Search.Term")]
+    [InlineData("Valid\\Search\\Term")]
+    [InlineData("Vælid.Seårch.Tørm")]
+    public async Task Search_ValidSearchTermExpectedResponse_ShouldSendRequest(string searchTerm)
     {
         // Arrange
-        const string searchTerm = "ValidSearchTerm";
         var httpClient = GetMockedClient(
-            uri: $"search?query={searchTerm}",
+            uri: $"search?query={searchTerm.ToValidUri()}",
             content: JsonSerializer.Serialize(new List<Offer> { new() })
         );
         var sut = GetSut();
@@ -60,7 +66,7 @@ public class ClientTests
         // Arrange
         const string searchTerm = "ValidSearchTerm";
         var httpClient = GetMockedClient(
-            uri: $"search?query={searchTerm}",
+            uri: $"search?query={searchTerm.ToValidUri()}",
             statusCode: statusCode
         );
         var sut = GetSut();
@@ -84,7 +90,7 @@ public class ClientTests
         // Arrange
         const string searchTerm = "ValidSearchTerm";
         var httpClient = GetMockedClient(
-            uri: $"search?query={searchTerm}",
+            uri: $"search?query={searchTerm.ToValidUri()}",
             content: string.Empty
         );
         var sut = GetSut();

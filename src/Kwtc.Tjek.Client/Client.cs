@@ -17,11 +17,9 @@ public class Client : IClient
     public async Task<IReadOnlyList<Offer>> Search(string query, CancellationToken cancellationToken = default)
     {
         Guard.IsNotNullOrEmpty(query, nameof(query));
-
-        // TODO: Ensure we can handle queries with whitespaces
-
+        
         var client = this.httpClientFactory.CreateClient(Constants.HttpClientName);
-        var response = await client.GetAsync($"v2/offers/search?query={query}", cancellationToken);
+        var response = await client.GetAsync($"v2/offers/search?query={query.ToValidUri()}", cancellationToken);
 
         response.EnsureSuccessStatusCode();
 
