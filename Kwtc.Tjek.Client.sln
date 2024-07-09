@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9C75E12E-C71F-4ABF-9295-452FC0DB7B9A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D89F0A53-BC97-47A6-A334-0D2DD992A0EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwtc.Tjek.Client.Abstractions", "src\Kwtc.Tjek.Client.Abstractions\Kwtc.Tjek.Client.Abstractions.csproj", "{27A8AE87-BCE9-4AE5-AB07-1FBDAD3B8398}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwtc.Tjek.Client", "src\Kwtc.Tjek.Client\Kwtc.Tjek.Client.csproj", "{891F57D1-6CE1-4825-A1B6-F3844E86396A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwtc.Tjek.Client.Tests", "test\Kwtc.Tjek.Client.Tests\Kwtc.Tjek.Client.Tests.csproj", "{46E2396E-00E5-41D8-9A8B-730ADAC6113C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{27A8AE87-BCE9-4AE5-AB07-1FBDAD3B8398} = {9C75E12E-C71F-4ABF-9295-452FC0DB7B9A}
+		{891F57D1-6CE1-4825-A1B6-F3844E86396A} = {9C75E12E-C71F-4ABF-9295-452FC0DB7B9A}
+		{46E2396E-00E5-41D8-9A8B-730ADAC6113C} = {D89F0A53-BC97-47A6-A334-0D2DD992A0EE}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27A8AE87-BCE9-4AE5-AB07-1FBDAD3B8398}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27A8AE87-BCE9-4AE5-AB07-1FBDAD3B8398}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27A8AE87-BCE9-4AE5-AB07-1FBDAD3B8398}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27A8AE87-BCE9-4AE5-AB07-1FBDAD3B8398}.Release|Any CPU.Build.0 = Release|Any CPU
+		{891F57D1-6CE1-4825-A1B6-F3844E86396A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{891F57D1-6CE1-4825-A1B6-F3844E86396A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{891F57D1-6CE1-4825-A1B6-F3844E86396A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{891F57D1-6CE1-4825-A1B6-F3844E86396A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46E2396E-00E5-41D8-9A8B-730ADAC6113C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E2396E-00E5-41D8-9A8B-730ADAC6113C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E2396E-00E5-41D8-9A8B-730ADAC6113C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E2396E-00E5-41D8-9A8B-730ADAC6113C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
