@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using CommunityToolkit.Diagnostics;
 using Kwtc.Tjek.Client.Abstractions;
 using Kwtc.Tjek.Client.Abstractions.Models;
@@ -14,12 +15,30 @@ public class Client : IClient
         this.httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IReadOnlyList<Offer>> Search(string query, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<Offer>> Search(
+        string query,
+        string? dealerId = null,
+        string? catalogId = null,
+        string? publicationType = null,
+        int? limit = null,
+        CancellationToken cancellationToken = default)
     {
         Guard.IsNotNullOrEmpty(query, nameof(query));
-        
+
+        // Build query string
+        var builder = new StringBuilder();
+        builder.Append($"?query={query.ToValidUri()}");
+
+        var queryString = BuildQueryString(new Dictionary<string, string>
+        {
+            { "dealer_id", $"{dealerId}" },
+            { "catalog_id", $"{catalogId}" },
+            { "types", $"{publicationType}" },
+            { "limit", $"{limit}" },
+        }, builder);
+
         var client = this.httpClientFactory.CreateClient(Constants.HttpClientName);
-        var response = await client.GetAsync($"v2/offers/search?query={query.ToValidUri()}", cancellationToken);
+        var response = await client.GetAsync($"v2/offers/search{queryString}", cancellationToken);
 
         response.EnsureSuccessStatusCode();
 
@@ -32,5 +51,20 @@ public class Client : IClient
         var result = await JsonSerializer.DeserializeAsync<IReadOnlyList<Offer>>(contentStream, cancellationToken: cancellationToken);
 
         return result ?? [];
+    }
+
+    private static string BuildQueryString(IDictionary<string, string> parameters, StringBuilder builder)
+    {
+        foreach (var parameter in parameters)
+        {
+            if (string.IsNullOrEmpty(parameter.Value))
+            {
+                continue;
+            }
+
+            builder.Append($"&{parameter.Key}={parameter.Value.ToValidUri()}");
+        }
+
+        return builder.ToString();
     }
 }
