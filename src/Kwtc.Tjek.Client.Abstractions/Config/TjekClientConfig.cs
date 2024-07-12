@@ -1,6 +1,6 @@
-﻿namespace Kwtc.Tjek.Client;
+﻿namespace Kwtc.Tjek.Client.Abstractions.Config;
 
-public class ClientConfig
+public class TjekClientConfig
 {
     public static string SectionName => "TjekClientConfig";
     
