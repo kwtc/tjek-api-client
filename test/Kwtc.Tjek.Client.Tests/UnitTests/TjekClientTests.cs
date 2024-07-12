@@ -7,7 +7,7 @@ using Moq.Protected;
 
 namespace Kwtc.Tjek.Client.Tests.UnitTests;
 
-public class ClientTests
+public class TjekClientTests
 {
     private readonly Mock<IHttpClientFactory> httpClientFactoryMock = new();
 
@@ -263,8 +263,8 @@ public class ClientTests
         return httpClient;
     }
 
-    private Client GetSut()
+    private TjekClient GetSut()
     {
-        return new Client(this.httpClientFactoryMock.Object);
+        return new TjekClient(this.httpClientFactoryMock.Object);
     }
 }

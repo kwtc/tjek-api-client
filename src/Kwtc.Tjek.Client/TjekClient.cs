@@ -6,11 +6,11 @@ using Kwtc.Tjek.Client.Abstractions.Models;
 
 namespace Kwtc.Tjek.Client;
 
-public class Client : IClient
+public class TjekClient : ITjekClient
 {
     private readonly IHttpClientFactory httpClientFactory;
 
-    public Client(IHttpClientFactory httpClientFactory)
+    public TjekClient(IHttpClientFactory httpClientFactory)
     {
         this.httpClientFactory = httpClientFactory;
     }
@@ -51,6 +51,22 @@ public class Client : IClient
         var result = await JsonSerializer.DeserializeAsync<IReadOnlyList<Offer>>(contentStream, cancellationToken: cancellationToken);
 
         return result ?? [];
+    }
+
+    /// <summary>
+    /// NOT IMPLEMENTED
+    /// </summary>
+    public Task<IReadOnlyList<Offer>> List(string? dealerId = null, string? catalogId = null, string? publicationType = null, int? limit = null, int? offset = null, string? orderBy = null, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// NOT IMPLEMENTED
+    /// </summary>
+    public Task<Offer?> Offer(string id, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
     }
 
     private static string BuildQueryString(IDictionary<string, string> parameters, StringBuilder builder)
