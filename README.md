@@ -36,13 +36,18 @@ After registering the services you can inject the client and configuration.
 ```csharp
 public class MyService
 {
-    private readonly ITjekClient _tjekClient;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly TjekClientConfig _tjekClientConfig;
 
-    public MyService(ITjekClient tjekClient, IOptions<TjekClientConfig> tjekClientConfig)
+    public MyService(IHttpClientFactory httpClientFactory, IOptions<TjekClientConfig> tjekClientConfig)
     {
-        _tjekClient = tjekClient;
+        _httpClientFactory = httpClientFactory;
         _tjekClientConfig = tjekClientConfig.Value;
+    }
+    
+    public Task MyMethod()
+    {
+        var client = _httpClientFactory.CreateClient(Constants.HttpClientName);
     }
 }
 ```
