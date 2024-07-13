@@ -6,6 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Authors>Kasper Christiansen</Authors>
+    <Description>API client for tjek.com</Description>
+    <RepositoryUrl>https://github.com/kwtc/tjek-client-dotnet</RepositoryUrl>
+    <PackageTags>API client tjek.com</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +21,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kwtc.Tjek.Client.Abstractions\Kwtc.Tjek.Client.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
