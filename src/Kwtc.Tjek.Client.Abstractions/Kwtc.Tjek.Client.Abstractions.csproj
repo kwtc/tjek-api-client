@@ -6,6 +6,11 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Kwtc.Tjek.Client.Abstractions</RootNamespace>
     <IsPackable>true</IsPackable>
+    <Authors>Kasper Christiansen</Authors>
+    <Description>API client for tjek.com</Description>
+    <RepositoryUrl>https://github.com/kwtc/tjek-client-dotnet</RepositoryUrl>
+    <PackageTags>API client tjek.com</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
 </Project>
