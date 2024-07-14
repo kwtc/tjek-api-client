@@ -7,7 +7,7 @@ public interface ITjekClient
     /// <summary>
     /// Search for offers
     /// </summary>
-    public Task<IReadOnlyList<Offer>> Search(
+    public Task<IReadOnlyList<Offer>> SearchOffers(
         string query,
         string? dealerId = null,
         string? catalogId = null,
@@ -16,11 +16,9 @@ public interface ITjekClient
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// NOT IMPLEMENTED
-    /// 
-    /// Get list current offers
+    /// Get list of current offers
     /// </summary>
-    public Task<IReadOnlyList<Offer>> List(
+    public Task<IReadOnlyList<Offer>> ListOffers(
         string? dealerId = null,
         string? catalogId = null,
         string? publicationType = null,
@@ -30,9 +28,18 @@ public interface ITjekClient
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// NOT IMPLEMENTED
-    /// 
     /// Get offer by id
     /// </summary>
-    public Task<Offer?> Offer(string id, CancellationToken cancellationToken = default);
+    public Task<Offer?> GetOffer(string id, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Get list of catalogs
+    /// </summary>
+    public Task<IReadOnlyList<Catalog>> ListCatalogs(
+        string? dealerId = null,
+        string? publicationType = null,
+        int? limit = null,
+        int? offset = null,
+        string? orderBy = null,
+        CancellationToken cancellationToken = default);
 }
