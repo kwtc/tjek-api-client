@@ -13,7 +13,7 @@ As the heading states this is a .NET API client for tjek.com
 - [x] /v2/offers
 - [x] /v2/offers/{offerId}
 - [x] /v2/catalogs
-- [ ] /v2/catalogs/{catalogId}
+- [x] /v2/catalogs/{catalogId}
 - [ ] /v2/catalogs/{catalogId}/pages
 - [ ] /v2/catalogs/{catalogId}/hotspots
 - [ ] /v2/catalogs/{catalogId}/page_decorations
@@ -50,7 +50,7 @@ public class MyService
         _tjekClientConfig = tjekClientConfig.Value;
     }
     
-    public Task MyMethod()
+    public void MyMethod()
     {
         var client = _httpClientFactory.CreateClient(Constants.HttpClientName);
     }

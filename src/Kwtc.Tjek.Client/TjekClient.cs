@@ -131,6 +131,24 @@ public class TjekClient : ITjekClient
         return result ?? [];
     }
 
+    public async Task<Catalog?> GetCatalog(string id, CancellationToken cancellationToken = default)
+    {
+        Guard.IsNotNullOrEmpty(id, nameof(id));
+
+        var client = this.httpClientFactory.CreateClient(Constants.HttpClientName);
+        var response = await client.GetAsync($"v2/catalogs/{id}", cancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var contentStream = await response.Content.ReadAsStreamAsync(cancellationToken);
+        if (contentStream.Length == 0)
+        {
+            throw new HttpRequestException(HttpRequestError.InvalidResponse, "Response content is empty");
+        }
+
+        return await JsonSerializer.DeserializeAsync<Catalog>(contentStream, cancellationToken: cancellationToken);
+    }
+
     private static string BuildQueryString(IDictionary<string, string> parameters, StringBuilder builder)
     {
         var i = 0;

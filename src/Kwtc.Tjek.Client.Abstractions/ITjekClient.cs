@@ -42,4 +42,9 @@ public interface ITjekClient
         int? offset = null,
         string? orderBy = null,
         CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Get catalog by id
+    /// </summary>
+    public Task<Catalog?> GetCatalog(string id, CancellationToken cancellationToken = default);
 }
