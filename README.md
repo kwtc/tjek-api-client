@@ -6,12 +6,17 @@ As the heading states this is a .NET API client for tjek.com
 > **Warning**
 > This is work in progress
 > 
-> Minor and patch version bumps may break your code until version 1.0.0 is released 
+> Minor and patch version bumps may have breaking changes until version 1.0.0 is released 
 
 ## Supported endpoint status
 - [x] /v2/offers/search
-- [ ] /v2/offers
-- [ ] /v2/offers/{offerId}
+- [x] /v2/offers
+- [x] /v2/offers/{offerId}
+- [x] /v2/catalogs
+- [ ] /v2/catalogs/{catalogId}
+- [ ] /v2/catalogs/{catalogId}/pages
+- [ ] /v2/catalogs/{catalogId}/hotspots
+- [ ] /v2/catalogs/{catalogId}/page_decorations
 
 ## How to use
 Add configuration to appsettings.json

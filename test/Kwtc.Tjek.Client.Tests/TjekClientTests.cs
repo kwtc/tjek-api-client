@@ -5,7 +5,7 @@ using Kwtc.Tjek.Client.Abstractions.Models;
 using Moq;
 using Moq.Protected;
 
-namespace Kwtc.Tjek.Client.Tests.UnitTests;
+namespace Kwtc.Tjek.Client.Tests;
 
 public class TjekClientTests
 {
@@ -14,13 +14,13 @@ public class TjekClientTests
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public Task Search_InvalidSearchTerm_ShouldThrow(string searchTerm)
+    public Task SearchOffers_InvalidSearchTerm_ShouldThrow(string searchTerm)
     {
         // Arrange
-        var sut = GetSut();
+        var sut = this.GetSut();
 
         // Act
-        var act = async () => await sut.Search(searchTerm);
+        var act = async () => await sut.SearchOffers(searchTerm);
 
         // Assert
         return act.Should().ThrowAsync<ArgumentException>();
@@ -34,21 +34,21 @@ public class TjekClientTests
     [InlineData("Valid.Search.Term")]
     [InlineData("Valid\\Search\\Term")]
     [InlineData("Vælid.Seårch.Tørm")]
-    public async Task Search_ValidSearchTermExpectedResponse_ShouldSendRequest(string searchTerm)
+    public async Task SearchOffers_ValidSearchTermExpectedResponse_ShouldSendRequest(string searchTerm)
     {
         // Arrange
         var httpClient = GetMockedClient(
             uri: $"search?query={searchTerm.ToValidUri()}",
             content: JsonSerializer.Serialize(new List<Offer> { new() })
         );
-        var sut = GetSut();
+        var sut = this.GetSut();
 
         this.httpClientFactoryMock
             .Setup(x => x.CreateClient(Constants.HttpClientName))
             .Returns(httpClient);
 
         // Act
-        await sut.Search(searchTerm);
+        await sut.SearchOffers(searchTerm);
 
         // Assert
         this.httpClientFactoryMock.Verify(x => x.CreateClient(Constants.HttpClientName), Times.Once);
@@ -61,7 +61,7 @@ public class TjekClientTests
     [InlineData(HttpStatusCode.NotFound)]
     [InlineData(HttpStatusCode.InternalServerError)]
     [InlineData(HttpStatusCode.MethodNotAllowed)]
-    public async Task Search_ValidSearchTermUnexpectedResponseCode_ShouldThrow(HttpStatusCode statusCode)
+    public async Task SearchOffers_ValidSearchTermUnexpectedResponseCode_ShouldThrow(HttpStatusCode statusCode)
     {
         // Arrange
         const string searchTerm = "ValidSearchTerm";
@@ -69,14 +69,14 @@ public class TjekClientTests
             uri: $"search?query={searchTerm.ToValidUri()}",
             statusCode: statusCode
         );
-        var sut = GetSut();
+        var sut = this.GetSut();
 
         this.httpClientFactoryMock
             .Setup(x => x.CreateClient(Constants.HttpClientName))
             .Returns(httpClient);
 
         // Act
-        var act = () => sut.Search(searchTerm);
+        var act = () => sut.SearchOffers(searchTerm);
 
         // Assert
         await act.Should().ThrowAsync<HttpRequestException>();
@@ -85,7 +85,7 @@ public class TjekClientTests
     }
 
     [Fact]
-    public async Task Search_ValidSearchTermUnexpectedResponseContent_ShouldThrow()
+    public async Task SearchOffers_ValidSearchTermUnexpectedResponseContent_ShouldThrow()
     {
         // Arrange
         const string searchTerm = "ValidSearchTerm";
@@ -93,14 +93,14 @@ public class TjekClientTests
             uri: $"search?query={searchTerm.ToValidUri()}",
             content: string.Empty
         );
-        var sut = GetSut();
+        var sut = this.GetSut();
 
         this.httpClientFactoryMock
             .Setup(x => x.CreateClient(Constants.HttpClientName))
             .Returns(httpClient);
 
         // Act
-        var act = () => sut.Search(searchTerm);
+        var act = () => sut.SearchOffers(searchTerm);
 
         // Assert
         await act.Should().ThrowAsync<HttpRequestException>().WithMessage("*Response content is empty*");
@@ -109,7 +109,7 @@ public class TjekClientTests
     }
 
     [Fact]
-    public async Task Search_ValidSearchTermAndDealerIdExpectedResponse_ShouldSendRequest()
+    public async Task SearchOffers_ValidSearchTermAndDealerIdExpectedResponse_ShouldSendRequest()
     {
         // Arrange
         const string searchTerm = "ValidSearchTerm";
@@ -117,21 +117,21 @@ public class TjekClientTests
             uri: $"search?query={searchTerm.ToValidUri()}&dealer_id=123",
             content: JsonSerializer.Serialize(new List<Offer> { new() })
         );
-        var sut = GetSut();
+        var sut = this.GetSut();
 
         this.httpClientFactoryMock
             .Setup(x => x.CreateClient(Constants.HttpClientName))
             .Returns(httpClient);
 
         // Act
-        await sut.Search(query: searchTerm, dealerId: "123");
+        await sut.SearchOffers(query: searchTerm, dealerId: "123");
 
         // Assert
         this.httpClientFactoryMock.Verify(x => x.CreateClient(Constants.HttpClientName), Times.Once);
     }
     
     [Fact]
-    public async Task Search_ValidSearchTermAndDealerIdLimitExpectedResponse_ShouldSendRequest()
+    public async Task SearchOffers_ValidSearchTermAndDealerIdLimitExpectedResponse_ShouldSendRequest()
     {
         // Arrange
         const string searchTerm = "ValidSearchTerm";
@@ -139,21 +139,21 @@ public class TjekClientTests
             uri: $"search?query={searchTerm.ToValidUri()}&dealer_id=123&limit=10",
             content: JsonSerializer.Serialize(new List<Offer> { new() })
         );
-        var sut = GetSut();
+        var sut = this.GetSut();
 
         this.httpClientFactoryMock
             .Setup(x => x.CreateClient(Constants.HttpClientName))
             .Returns(httpClient);
 
         // Act
-        await sut.Search(query: searchTerm, dealerId: "123", limit: 10);
+        await sut.SearchOffers(query: searchTerm, dealerId: "123", limit: 10);
 
         // Assert
         this.httpClientFactoryMock.Verify(x => x.CreateClient(Constants.HttpClientName), Times.Once);
     }
     
     [Fact]
-    public async Task Search_ValidSearchTermAndDealerIdNullExpectedResponse_RequestShouldNotContainDealerId()
+    public async Task SearchOffers_ValidSearchTermAndDealerIdNullExpectedResponse_RequestShouldNotContainDealerId()
     {
         // Arrange
         const string searchTerm = "ValidSearchTerm";
@@ -161,21 +161,21 @@ public class TjekClientTests
             uri: $"search?query={searchTerm.ToValidUri()}&limit=10",
             content: JsonSerializer.Serialize(new List<Offer> { new() })
         );
-        var sut = GetSut();
+        var sut = this.GetSut();
 
         this.httpClientFactoryMock
             .Setup(x => x.CreateClient(Constants.HttpClientName))
             .Returns(httpClient);
 
         // Act
-        await sut.Search(query: searchTerm, dealerId: null, limit: 10);
+        await sut.SearchOffers(query: searchTerm, dealerId: null, limit: 10);
 
         // Assert
         this.httpClientFactoryMock.Verify(x => x.CreateClient(Constants.HttpClientName), Times.Once);
     }
     
     [Fact]
-    public async Task Search_ValidSearchTermAndCatalogIdExpectedResponse_ShouldSendRequest()
+    public async Task SearchOffers_ValidSearchTermAndCatalogIdExpectedResponse_ShouldSendRequest()
     {
         // Arrange
         const string searchTerm = "ValidSearchTerm";
@@ -183,21 +183,21 @@ public class TjekClientTests
             uri: $"search?query={searchTerm.ToValidUri()}&catalog_id=123",
             content: JsonSerializer.Serialize(new List<Offer> { new() })
         );
-        var sut = GetSut();
+        var sut = this.GetSut();
 
         this.httpClientFactoryMock
             .Setup(x => x.CreateClient(Constants.HttpClientName))
             .Returns(httpClient);
 
         // Act
-        await sut.Search(query: searchTerm, catalogId: "123");
+        await sut.SearchOffers(query: searchTerm, catalogId: "123");
 
         // Assert
         this.httpClientFactoryMock.Verify(x => x.CreateClient(Constants.HttpClientName), Times.Once);
     }
     
     [Fact]
-    public async Task Search_ValidSearchTermAndPublicationTypeExpectedResponse_ShouldSendRequest()
+    public async Task SearchOffers_ValidSearchTermAndPublicationTypeExpectedResponse_ShouldSendRequest()
     {
         // Arrange
         const string searchTerm = "ValidSearchTerm";
@@ -205,21 +205,21 @@ public class TjekClientTests
             uri: $"search?query={searchTerm.ToValidUri()}&types=123",
             content: JsonSerializer.Serialize(new List<Offer> { new() })
         );
-        var sut = GetSut();
+        var sut = this.GetSut();
 
         this.httpClientFactoryMock
             .Setup(x => x.CreateClient(Constants.HttpClientName))
             .Returns(httpClient);
 
         // Act
-        await sut.Search(query: searchTerm, publicationType: "123");
+        await sut.SearchOffers(query: searchTerm, publicationType: "123");
 
         // Assert
         this.httpClientFactoryMock.Verify(x => x.CreateClient(Constants.HttpClientName), Times.Once);
     }
     
     [Fact]
-    public async Task Search_ValidSearchTermAndLimitExpectedResponse_ShouldSendRequest()
+    public async Task SearchOffers_ValidSearchTermAndLimitExpectedResponse_ShouldSendRequest()
     {
         // Arrange
         const string searchTerm = "ValidSearchTerm";
@@ -227,19 +227,19 @@ public class TjekClientTests
             uri: $"search?query={searchTerm.ToValidUri()}&limit=10",
             content: JsonSerializer.Serialize(new List<Offer> { new() })
         );
-        var sut = GetSut();
+        var sut = this.GetSut();
 
         this.httpClientFactoryMock
             .Setup(x => x.CreateClient(Constants.HttpClientName))
             .Returns(httpClient);
 
         // Act
-        await sut.Search(query: searchTerm, limit: 10);
+        await sut.SearchOffers(query: searchTerm, limit: 10);
 
         // Assert
         this.httpClientFactoryMock.Verify(x => x.CreateClient(Constants.HttpClientName), Times.Once);
     }
-
+    
     private static HttpClient GetMockedClient(string uri, HttpStatusCode statusCode = HttpStatusCode.OK, string content = "")
     {
         var httpMessageHandlerMock = new Mock<HttpMessageHandler>();
