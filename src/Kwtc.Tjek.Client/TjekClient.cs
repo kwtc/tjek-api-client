@@ -82,12 +82,12 @@ public class TjekClient : ITjekClient
         return result ?? [];
     }
 
-    public async Task<Offer?> GetOffer(string id, CancellationToken cancellationToken = default)
+    public async Task<Offer?> GetOffer(string offerId, CancellationToken cancellationToken = default)
     {
-        Guard.IsNotNullOrEmpty(id, nameof(id));
+        Guard.IsNotNullOrEmpty(offerId, nameof(offerId));
 
         var client = this.httpClientFactory.CreateClient(Constants.HttpClientName);
-        var response = await client.GetAsync($"v2/offers/{id}", cancellationToken);
+        var response = await client.GetAsync($"v2/offers/{offerId}", cancellationToken);
 
         response.EnsureSuccessStatusCode();
 
@@ -125,18 +125,18 @@ public class TjekClient : ITjekClient
         }
 
         var content = await response.Content.ReadAsStringAsync(cancellationToken);
-        
+
         var result = await JsonSerializer.DeserializeAsync<IReadOnlyList<Catalog>>(contentStream, cancellationToken: cancellationToken);
 
         return result ?? [];
     }
 
-    public async Task<Catalog?> GetCatalog(string id, CancellationToken cancellationToken = default)
+    public async Task<Catalog?> GetCatalog(string catalogId, CancellationToken cancellationToken = default)
     {
-        Guard.IsNotNullOrEmpty(id, nameof(id));
+        Guard.IsNotNullOrEmpty(catalogId, nameof(catalogId));
 
         var client = this.httpClientFactory.CreateClient(Constants.HttpClientName);
-        var response = await client.GetAsync($"v2/catalogs/{id}", cancellationToken);
+        var response = await client.GetAsync($"v2/catalogs/{catalogId}", cancellationToken);
 
         response.EnsureSuccessStatusCode();
 
@@ -147,6 +147,68 @@ public class TjekClient : ITjekClient
         }
 
         return await JsonSerializer.DeserializeAsync<Catalog>(contentStream, cancellationToken: cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<CatalogPage>> GetCatalogPages(string catalogId, CancellationToken cancellationToken = default)
+    {
+        Guard.IsNotNullOrEmpty(catalogId, nameof(catalogId));
+
+        var client = this.httpClientFactory.CreateClient(Constants.HttpClientName);
+        var response = await client.GetAsync($"v2/catalogs/{catalogId}/pages", cancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var contentStream = await response.Content.ReadAsStreamAsync(cancellationToken);
+        if (contentStream.Length == 0)
+        {
+            throw new HttpRequestException(HttpRequestError.InvalidResponse, "Response content is empty");
+        }
+
+        var result = await JsonSerializer.DeserializeAsync<IReadOnlyList<CatalogPage>>(contentStream, cancellationToken: cancellationToken);
+
+        return result ?? [];
+    }
+
+    public async Task<IReadOnlyList<CatalogPageDecoration>> GetCatalogPageDecorations(string catalogId, CancellationToken cancellationToken = default)
+    {
+        Guard.IsNotNullOrEmpty(catalogId, nameof(catalogId));
+
+        var client = this.httpClientFactory.CreateClient(Constants.HttpClientName);
+        var response = await client.GetAsync($"v2/catalogs/{catalogId}/page_decorations", cancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var contentStream = await response.Content.ReadAsStreamAsync(cancellationToken);
+        if (contentStream.Length == 0)
+        {
+            throw new HttpRequestException(HttpRequestError.InvalidResponse, "Response content is empty");
+        }
+
+        var result = await JsonSerializer.DeserializeAsync<IReadOnlyList<CatalogPageDecoration>>(contentStream, cancellationToken: cancellationToken);
+
+        return result ?? [];
+    }
+
+    public async Task<IReadOnlyList<CatalogHotspot>> GetCatalogHotspots(string catalogId, CancellationToken cancellationToken = default)
+    {
+        Guard.IsNotNullOrEmpty(catalogId, nameof(catalogId));
+
+        var client = this.httpClientFactory.CreateClient(Constants.HttpClientName);
+        var response = await client.GetAsync($"v2/catalogs/{catalogId}/hotspots", cancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var contentStream = await response.Content.ReadAsStreamAsync(cancellationToken);
+        if (contentStream.Length == 0)
+        {
+            throw new HttpRequestException(HttpRequestError.InvalidResponse, "Response content is empty");
+        }
+
+        var yo = await response.Content.ReadAsStringAsync(cancellationToken);
+        
+        var result = await JsonSerializer.DeserializeAsync<IReadOnlyList<CatalogHotspot>>(contentStream, cancellationToken: cancellationToken);
+
+        return result ?? [];
     }
 
     private static string BuildQueryString(IDictionary<string, string> parameters, StringBuilder builder)
