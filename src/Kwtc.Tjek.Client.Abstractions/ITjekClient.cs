@@ -30,7 +30,7 @@ public interface ITjekClient
     /// <summary>
     /// Get offer by id
     /// </summary>
-    public Task<Offer?> GetOffer(string id, CancellationToken cancellationToken = default);
+    public Task<Offer?> GetOffer(string offerId, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Get list of catalogs
@@ -46,5 +46,20 @@ public interface ITjekClient
     /// <summary>
     /// Get catalog by id
     /// </summary>
-    public Task<Catalog?> GetCatalog(string id, CancellationToken cancellationToken = default);
+    public Task<Catalog?> GetCatalog(string catalogId, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Get catalog pages by catalog id
+    /// </summary>
+    public Task<IReadOnlyList<CatalogPage>> GetCatalogPages(string catalogId, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Get catalog page decorations by catalog id
+    /// </summary>
+    public Task<IReadOnlyList<CatalogPageDecoration>> GetCatalogPageDecorations(string catalogId, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Get catalog hotspots by catalog id
+    /// </summary>
+    public Task<IReadOnlyList<CatalogHotspot>> GetCatalogHotspots(string catalogId, CancellationToken cancellationToken = default);
 }
